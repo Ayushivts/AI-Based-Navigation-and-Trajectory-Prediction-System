@@ -3,6 +3,7 @@ import torch
 import torch.nn as nn
 
 from torch.utils.data import TensorDataset, DataLoader
+from sklearn.model_selection import train_test_split
 
 # =========================
 # LOAD DATA
@@ -15,20 +16,53 @@ print("X shape:", X.shape)
 print("y shape:", y.shape)
 
 # =========================
+# TRAIN TEST SPLIT
+# =========================
+
+X_train, X_test, y_train, y_test = train_test_split(
+    X,
+    y,
+    test_size=0.2,
+    random_state=42
+)
+
+print("Training Samples:", X_train.shape[0])
+print("Testing Samples:", X_test.shape[0])
+# =========================
 # CONVERT TO TENSORS
 # =========================
 
-X = torch.tensor(X, dtype=torch.float32)
-y = torch.tensor(y, dtype=torch.float32)
+X_train = torch.tensor(
+    X_train,
+    dtype=torch.float32
+)
 
+y_train = torch.tensor(
+    y_train,
+    dtype=torch.float32
+)
+
+X_test = torch.tensor(
+    X_test,
+    dtype=torch.float32
+)
+
+y_test = torch.tensor(
+    y_test,
+    dtype=torch.float32
+)
 # =========================
 # CREATE DATALOADER
 # =========================
 
-dataset = TensorDataset(X, y)
+train_dataset = TensorDataset(
+    X_train,
+    y_train
+)
+
 
 loader = DataLoader(
-    dataset,
+    train_dataset,
     batch_size=8,
     shuffle=True
 )
@@ -50,7 +84,7 @@ class TrajectoryLSTM(nn.Module):
             batch_first=True
         )
 
-        self.fc = nn.Linear(64, 20)
+        self.fc = nn.Linear(64, 200)
 
     def forward(self, x):
 
@@ -60,7 +94,7 @@ class TrajectoryLSTM(nn.Module):
 
         out = self.fc(out)
 
-        out = out.view(-1, 10, 2)
+        out = out.view(-1, 100, 2)
 
         return out
 
@@ -112,7 +146,22 @@ for epoch in range(epochs):
         f"Epoch {epoch+1}/{epochs}, "
         f"Loss: {total_loss:.6f}"
     )
+# =========================
+# TEST EVALUATION
+# =========================
 
+model.eval()
+
+with torch.no_grad():
+
+    test_predictions = model(X_test)
+
+    test_loss = criterion(
+        test_predictions,
+        y_test
+    )
+
+print("\nTest Loss:", test_loss.item())
 # =========================
 # SAVE MODEL
 # =========================

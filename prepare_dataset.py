@@ -2,7 +2,7 @@ import os
 import pandas as pd
 
 # Path to OXTS data folder
-folder_path = r"E:.\dataset\oxts\data"
+folder_path = r"E:.\dataset\oxts_01\data"
 
 data = []
 

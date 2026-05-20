@@ -119,7 +119,7 @@ optimizer = torch.optim.Adam(
 # TRAINING LOOP
 # =========================
 
-epochs = 50
+epochs = 1000
 
 for epoch in range(epochs):
 

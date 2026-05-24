@@ -2,7 +2,7 @@ import numpy as np
 import torch
 import torch.nn as nn
 import matplotlib.pyplot as plt
-
+from filterpy.kalman import KalmanFilter
 # =========================
 # LOAD DATA
 # =========================
@@ -86,6 +86,47 @@ with torch.no_grad():
 
 predicted_future = predicted_future.numpy()[0]
 
+
+# ============================================
+# KALMAN FILTER SMOOTHING
+# ============================================
+
+kf = KalmanFilter(dim_x=2, dim_z=2)
+
+kf.x = np.array([
+    predicted_future[0,0],
+    predicted_future[0,1]
+])
+
+kf.F = np.array([
+    [1,0],
+    [0,1]
+])
+
+kf.H = np.array([
+    [1,0],
+    [0,1]
+])
+
+kf.P *= 1000
+kf.R *= 0.01
+kf.Q *= 0.001
+
+smoothed_predictions = []
+
+for point in predicted_future:
+
+    kf.predict()
+
+    kf.update(point)
+
+    smoothed_predictions.append(
+        kf.x.copy()
+    )
+
+smoothed_predictions = np.array(
+    smoothed_predictions
+)
 # =========================
 # PLOT RESULTS
 # =========================
@@ -102,8 +143,8 @@ plt.plot(
 
 # Predicted trajectory
 plt.plot(
-    predicted_future[:,1],
-    predicted_future[:,0],
+    smoothed_predictions[:,1],
+    smoothed_predictions[:,0],
     marker='x',
     label='Predicted'
 )

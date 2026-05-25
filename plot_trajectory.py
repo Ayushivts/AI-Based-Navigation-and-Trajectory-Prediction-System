@@ -1,35 +1,81 @@
 import pandas as pd
-import matplotlib
-matplotlib.use('TkAgg')
-
-import pandas as pd
 import matplotlib.pyplot as plt
 
-# Load CSV
-df = pd.read_csv("trajectory_data.csv")
+# ====================================
+# LOAD DATA
+# ====================================
 
-print(df.head())
+df = pd.read_csv(
+    "ship_trajectory_data.csv"
+)
 
-# Create figure
+# ====================================
+# SELECT ONE SHIP
+# ====================================
+
+ship_id = df['mmsi'].iloc[0]
+
+df = df[
+    df['mmsi'] == ship_id
+]
+
+# ====================================
+# PLOT TRAJECTORY
+# ====================================
+
 plt.figure(figsize=(10,6))
 
-# Plot trajectory
-plt.plot(df['lon'], df['lat'], color='blue')
+plt.plot(
+    df['lon'],
+    df['lat']
+)
 
-# Labels
 plt.xlabel("Longitude")
 plt.ylabel("Latitude")
 
-# Title
-plt.title("Vehicle Trajectory")
+plt.title("Ship Trajectory")
 
-# Grid
 plt.grid(True)
 
-# Save image
-plt.savefig("trajectory.png")
+plt.savefig(
+    "ship_trajectory.png"
+)
 
-print("Trajectory image saved!")
-
-# Show plot
 plt.show()
+
+
+# import pandas as pd
+# import matplotlib
+# matplotlib.use('TkAgg')
+
+# import pandas as pd
+# import matplotlib.pyplot as plt
+
+# # Load CSV
+# df = pd.read_csv("trajectory_data.csv")
+
+# print(df.head())
+
+# # Create figure
+# plt.figure(figsize=(10,6))
+
+# # Plot trajectory
+# plt.plot(df['lon'], df['lat'], color='blue')
+
+# # Labels
+# plt.xlabel("Longitude")
+# plt.ylabel("Latitude")
+
+# # Title
+# plt.title("Vehicle Trajectory")
+
+# # Grid
+# plt.grid(True)
+
+# # Save image
+# plt.savefig("trajectory.png")
+
+# print("Trajectory image saved!")
+
+# # Show plot
+# plt.show()

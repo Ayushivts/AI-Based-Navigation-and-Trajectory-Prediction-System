@@ -15,8 +15,8 @@ y = np.load("y.npy")
 # DEFINE PARAMETERS
 # ============================================
 
-past_steps = 200
-future_steps = 100
+past_steps = 300
+future_steps = 300
 
 # ============================================
 # DEFINE MODEL
@@ -35,8 +35,8 @@ class TrajectoryLSTM(nn.Module):
             batch_first=True
         )
 
-        # 100 future steps × 2 outputs
-        self.fc = nn.Linear(64, 200)
+        # 300 future steps × 2 outputs
+        self.fc = nn.Linear(64, 600)
 
     def forward(self, x):
 

@@ -27,8 +27,8 @@ print(scaled_data.shape)
 # CREATE SEQUENCES
 # =========================
 
-past_steps = 200
-future_steps = 100
+past_steps = 300
+future_steps = 300
 
 X = []
 y = []

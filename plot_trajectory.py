@@ -6,7 +6,7 @@ import matplotlib.pyplot as plt
 # ====================================
 
 df = pd.read_csv(
-    "ship_trajectory_data.csv"
+    "continuous_ship_trajectory.csv"
 )
 
 # ====================================

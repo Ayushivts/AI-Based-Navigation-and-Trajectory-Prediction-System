@@ -36,7 +36,7 @@ class TrajectoryLSTM(nn.Module):
             batch_first=True
         )
 
-        self.fc = nn.Linear(64, 200)
+        self.fc = nn.Linear(64, 600)
 
     def forward(self, x):
 
@@ -46,7 +46,7 @@ class TrajectoryLSTM(nn.Module):
 
         out = self.fc(out)
 
-        out = out.view(-1, 100, 2)
+        out = out.view(-1, 300, 2)
 
         return out
 
